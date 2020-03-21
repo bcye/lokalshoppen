@@ -8,8 +8,10 @@ class TimeSlot(models.Model):
 
 
 class Anfrage(models.Model):
-    unternehmen = models.ForeignKey(User, on_delete=models.CASCADE)
+    unternehmen_idy = models.ForeignKey(User, on_delete=models.CASCADE)
     kunden_email = models.EmailField()
     text = models.CharField(max_length=500)
     approved = models.BooleanField()
     slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
+
+
