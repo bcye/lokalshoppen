@@ -23,3 +23,22 @@ class UnternehmensProfil(models.Model):
     longitude = models.TextField()
     telefon = models.TextField()
     max_pro_slot = models.PositiveSmallIntegerField()
+
+    KATEGORIEN_CHOICES = [
+        ("LEB", "Lebensmittel"),
+        ("BAE", "Bäckerei"),
+        ("FLE", "Fleischerei"),
+        ("GET", "Getränke"),
+        ("DRO", "Drogerie"),
+        ("ELE", "Elektronik"),
+        ("HWO", "Haushalt & Wohnen"),
+        ("WEB", "Werkeln & Basteln"),
+        ("SPO", "Sport"),
+        ("UNT", "Unterhaltung"),
+        ("MOD", "Mode"),
+        ("APO", "Apotheke"),
+        ("KIO", "Zeitungen & Kiosk"),
+    ]
+    kategorie = models.CharField(max_length=3, choices=KATEGORIEN_CHOICES)
+    oeffnungszeiten = models.TextField()
+    available_time_slots = models.TextField()
