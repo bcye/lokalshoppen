@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
+
 
 class TimeSlot(models.Model):
     start = models.DateTimeField()
@@ -15,8 +15,8 @@ class Anfrage(models.Model):
     slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
 
 
-class UnternehmenProfil(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class UnternehmensProfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.TextField()
     adresse = models.TextField()
     langitude = models.TextField()

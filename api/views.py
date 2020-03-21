@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer, AnfrageSerializer
-from .models import Anfrage
+from .serializers import UserSerializer, GroupSerializer, AnfrageSerializer, UnternehmensProfilSerializer
+from .models import Anfrage, UnternehmensProfil
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -29,4 +29,13 @@ class AnfrageViewSet(viewsets.ModelViewSet):
     """
     queryset = Anfrage.objects.all()
     serializer_class = AnfrageSerializer
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+
+
+class UnternehmenViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Unternehmen to be viewed or edited.
+    """
+    queryset = UnternehmensProfil.objects.all()
+    serializer_class = UnternehmensProfilSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
