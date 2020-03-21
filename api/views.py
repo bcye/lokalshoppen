@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer, AppointmentSerializer
-from .models import Appointment
+from .serializers import UserSerializer, GroupSerializer, AnfrageSerializer
+from .models import Anfrage
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -22,10 +23,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class AppointmentViewSet(viewsets.ModelViewSet):
+class AnfrageViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows togoAnfragen to be viewed or edited.
     """
-    queryset = Appointment.objects.all()
-    serializer_class = AppointmentSerializer
+    queryset = Anfrage.objects.all()
+    serializer_class = AnfrageSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]

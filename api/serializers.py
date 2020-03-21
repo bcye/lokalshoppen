@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Appointment
+from .models import Anfrage
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -13,7 +14,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ['url', 'name']
 
-class AppointmentSerializer(serializers.HyperlinkedModelSerializer):
+
+class AnfrageSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
-        model = Appointment
-        fields = '__all__'
+        model = Anfrage
+        fields = ['unternehmen', 'kunden_email', 'text', 'start_datum', 'end_datum']
