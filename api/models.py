@@ -14,4 +14,4 @@ class Anfrage(models.Model):
     start_datum = models.DateTimeField()
     end_datum = models.DateTimeField()
     approved = models.BooleanField()
-    slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
+    # slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
