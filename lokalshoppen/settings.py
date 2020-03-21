@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django_heroku
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +25,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%m@^)-rhhq%v^)cxp5@-6dvlndtw@c%jg5atmu99oy_6=gm!jf'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+def debug_val():
+    return (os.getenv('DEBUG') == "True")
 
-ALLOWED_HOSTS = []
+DEBUG = debug_val()
+
+# DEPLOY
+SECURE_SSL_REDIRECT = not debug_val()
+SESSION_COOKIE_SECURE = not debug_val()
+CSRF_COOKIE_SECURE = not debug_val()
+
+
+ALLOWED_HOSTS = [
+    'localhost',
+    'nameless-retreat-67960.herokuapp.com'
+]
 
 
 # Application definition
@@ -129,3 +146,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
