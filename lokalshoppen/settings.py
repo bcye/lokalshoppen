@@ -157,3 +157,9 @@ REST_FRAMEWORK = {
 django_heroku.settings(locals())
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+EMAIL_HOST = os.getenv('SMTP_HOST')
+EMAIL_HOST_USER = os.getenv('SMTP_USER')
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASS')
+EMAIL_PORT = os.getenv('SMTP_PORT')
+EMAIL_USE_TLS = True
