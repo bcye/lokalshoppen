@@ -1,26 +1,9 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import UserSerializer, GroupSerializer, AnfrageSerializer, UnternehmensProfilSerializer
+from .serializers import AnfrageSerializer, UnternehmensProfilSerializer
 from .models import Anfrage, UnternehmensProfil
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+from django.http import HttpResponse, HttpResponseForbidden
 
 
 class AnfrageViewSet(viewsets.ModelViewSet):
@@ -39,3 +22,14 @@ class UnternehmenViewSet(viewsets.ModelViewSet):
     queryset = UnternehmensProfil.objects.all()
     serializer_class = UnternehmensProfilSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+
+
+def confirm_purchase(request, id):
+    if not request.user.is_authenticated or not  request.user.is_staff:
+        return HttpResponseForbidden("Oops.")
+
+    anfrage = Anfrage.objects.get(id)
+    anfrage.approved = True
+    anfrage.save()
+
+    return HttpResponse(content="Vielen Dank")

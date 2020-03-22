@@ -3,18 +3,6 @@ from rest_framework import serializers
 from .models import Anfrage, TimeSlot, UnternehmensProfil
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['url', 'name']
-
-
 class SlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
@@ -34,10 +22,14 @@ class AnfrageSerializer(serializers.ModelSerializer):
         return Anfrage.objects.create(slot=slot, **validated_data)
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email']
+
 class UnternehmensProfilSerializer(serializers.ModelSerializer):
-    # user = UnternehmenSerializer()
+    user = UserSerializer()
 
     class Meta:
         model = UnternehmensProfil
         fields = '__all__'
-        depth = 1
