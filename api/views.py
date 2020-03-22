@@ -28,7 +28,7 @@ def confirm_purchase(request, id):
     if not request.user.is_authenticated or not  request.user.is_staff:
         return HttpResponseForbidden("Oops.")
 
-    anfrage = Anfrage.objects.get(id)
+    anfrage = Anfrage.objects.get(pk=id)
     anfrage.approved = True
     anfrage.save()
 

@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api',
+    'api.apps.ApiConfig',
     'corsheaders',
 ]
 
@@ -163,3 +163,5 @@ EMAIL_HOST_USER = os.getenv('SMTP_USER')
 EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASS')
 EMAIL_PORT = os.getenv('SMTP_PORT')
 EMAIL_USE_TLS = True
+
+DOMAIN_NAME = os.getenv('DOMAIN_NAME')
