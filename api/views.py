@@ -14,7 +14,6 @@ class AnfrageViewSet(viewsets.ModelViewSet):
     serializer_class = AnfrageSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
-
 class UnternehmenViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Unternehmen to be viewed or edited.

@@ -1,13 +1,16 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from .models import Anfrage
+from .models import Anfrage, UnternehmensProfil
 from django.core.mail import send_mail
 from django.urls import reverse
 from lokalshoppen.settings import DOMAIN_NAME
 
 
-@receiver(post_save, sender=Anfrage)
+@receiver(pre_save, sender=Anfrage)
 def send_confirmation(sender, instance, created, **kwargs):
+    #
+    # MAIL SENDING
+    #
     if not created:
         # send confirmation mail to buyer if accepted
         send_mail(

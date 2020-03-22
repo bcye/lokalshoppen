@@ -1,10 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import JSONField
+
+
+class SlotsDay(models.Model):
+    unternehmen = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    datum = models.DateField()
 
 
 class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
+    count = models.PositiveSmallIntegerField(default=0)
+    day = models.ForeignKey(SlotsDay, on_delete=models.CASCADE, null=True)
+
+
 
 
 class UnternehmensProfil(models.Model):
@@ -15,8 +26,7 @@ class UnternehmensProfil(models.Model):
     longitude = models.TextField()
     telefon = models.TextField()
     max_pro_slot = models.PositiveSmallIntegerField()
-    oeffnungszeiten = models.TextField()
-    available_time_slots = models.TextField()
+    oeffnungszeiten = JSONField()
     beschreibung = models.TextField()
 
     # Kategorien
@@ -52,7 +62,12 @@ class Anfrage(models.Model):
     kunden_email = models.EmailField()
     text = models.CharField(max_length=500)
     approved = models.BooleanField()
-    slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
+    slot = models.ForeignKey(TimeSlot, on_delete=models.PROTECT)
 
     def save(self, **kwargs):
-        unternehmen_profil = self.unternehmen_id
+        if (self.slot.count + 1) > self.unternehmen_id.unternehmensprofil.max_pro_slot or self.slot.day.unternehmen.unternehmensprofil is not self.unternehmen_id.unternehmensprofil:
+            raise ValidationError("TimeSlot already filled or wrong slot selected")
+
+        self.slot.count += 1
+        self.slot.save()
+        return super().save(**kwargs)
