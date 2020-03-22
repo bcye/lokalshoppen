@@ -42,6 +42,12 @@ class UnternehmensProfil(models.Model):
         ("MOD", "Mode"),
         ("APO", "Apotheke"),
         ("KIO", "Zeitungen & Kiosk"),
+        ("BUC", "Bücher"),
+        ("TIE", "Tierbedarf"),
+        ("BLU", "Blumenladen"),
+        ("OUT", "Outdoor"),
+        ("SON", "Sonstiges"),
+        ("RAU", "Raucherbedarf"),
     ]
     ober_kategorie = models.CharField(max_length=3, choices=KATEGORIEN_CHOICES)
     unter_kategorien = models.TextField()
