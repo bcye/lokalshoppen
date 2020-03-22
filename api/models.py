@@ -7,14 +7,6 @@ class TimeSlot(models.Model):
     end = models.DateTimeField()
 
 
-class Anfrage(models.Model):
-    unternehmen_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    kunden_email = models.EmailField()
-    text = models.CharField(max_length=500)
-    approved = models.BooleanField()
-    slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
-
-
 class UnternehmensProfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.TextField()
@@ -53,3 +45,14 @@ class UnternehmensProfil(models.Model):
     ]
     ober_kategorie = models.CharField(max_length=3, choices=KATEGORIEN_CHOICES)
     unter_kategorien = models.TextField()
+
+
+class Anfrage(models.Model):
+    unternehmen_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    kunden_email = models.EmailField()
+    text = models.CharField(max_length=500)
+    approved = models.BooleanField()
+    slot = models.OneToOneField(TimeSlot, on_delete=models.CASCADE)
+
+    def save(self, **kwargs):
+        unternehmen_profil = self.unternehmen_id
