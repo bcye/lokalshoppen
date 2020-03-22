@@ -25,6 +25,7 @@ class UnternehmensProfil(models.Model):
     max_pro_slot = models.PositiveSmallIntegerField()
     oeffnungszeiten = models.TextField()
     available_time_slots = models.TextField()
+    beschreibung = models.TextField()
 
     # Kategorien
     KATEGORIEN_CHOICES = [
