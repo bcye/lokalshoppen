@@ -4,18 +4,11 @@ from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import JSONField
 
 
-class SlotsDay(models.Model):
-    unternehmen = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    datum = models.DateField()
-
-
 class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     count = models.PositiveSmallIntegerField(default=0)
-    day = models.ForeignKey(SlotsDay, on_delete=models.CASCADE, null=True)
-
-
+    unternehmen = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
 class UnternehmensProfil(models.Model):
