@@ -2,8 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import JSONField
+from django_better_admin_arrayfield.models.fields import ArrayField
 from django.contrib.gis.db import models as geo_models
 
+
+class OberKategorie(models.Model):
+    slug = models.CharField(max_length=3)
+    name = models.CharField(max_length=100)
+
+
+class UnterKategorie(models.Model):
+    slug = models.CharField(max_length=5)
+    name = models.CharField(max_length=100)
 
 class Unternehmen(models.Model):
     email = models.EmailField()
@@ -14,34 +24,9 @@ class Unternehmen(models.Model):
     max_pro_slot = models.PositiveSmallIntegerField()
     oeffnungszeiten = JSONField()
     beschreibung = models.TextField()
-
-    # Kategorien
-    KATEGORIEN_CHOICES = [
-        ("LEB", "Lebensmittel"),
-        ("BAE", "Bäckerei"),
-        ("FLE", "Fleischerei"),
-        ("GET", "Getränke"),
-        ("DRO", "Drogerie"),
-        ("ELE", "Elektronik"),
-        ("HWO", "Haushalt & Wohnen"),
-        ("WEB", "Werkeln & Basteln"),
-        ("SPO", "Sport"),
-        ("UNT", "Unterhaltung"),
-        ("MOD", "Mode"),
-        ("APO", "Apotheke"),
-        ("KIO", "Zeitungen & Kiosk"),
-        ("BUe", "Bücher"),
-        ("TIE", "Tierbedarf"),
-        ("BLU", "Blumenladen"),
-        ("OUT", "Outdoor"),
-        ("SON", "Sonstiges"),
-        ("RAU", "Raucherbedarf"),
-        ("SPI", "Spielwaren"),
-        ("SCH", "Schuhe"),
-    ]
-    ober_kategorie = models.CharField(max_length=3, choices=KATEGORIEN_CHOICES)
-    unter_kategorien = models.TextField()
-
+    active = models.BooleanField(default=False)
+    ober_kategorien = models.ManyToManyField(OberKategorie)
+    unter_kategorien = models.ManyToManyField(UnterKategorie)
 
 
 class TimeSlot(models.Model):

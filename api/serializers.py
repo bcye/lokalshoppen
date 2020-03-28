@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Anfrage, TimeSlot, Unternehmen
+from .models import Anfrage, TimeSlot, Unternehmen, OberKategorie, UnterKategorie
 
 
 class SlotSerializer(serializers.ModelSerializer):
@@ -26,4 +26,16 @@ class UnternehmenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Unternehmen
         fields = ['email', 'name', 'adresse', 'point'
-                  'telefon', 'max_pro_slot', 'oeffnungszeiten', 'beschreibung', 'ober_kategorie', 'unter_kategorien']
+                  'telefon', 'max_pro_slot', 'oeffnungszeiten', 'beschreibung', 'ober_kategorien', 'unter_kategorien']
+
+
+class OberKategorienSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OberKategorie
+        fields = ['slug', 'name']
+
+
+class UnterKategorienSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UnterKategorie
+        fields = ['slug', 'name']

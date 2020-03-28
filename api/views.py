@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import AnfrageSerializer, UnternehmenSerializer
-from .models import Anfrage, Unternehmen
+from .serializers import AnfrageSerializer, UnternehmenSerializer, OberKategorienSerializer, UnterKategorienSerializer
+from .models import Anfrage, Unternehmen, OberKategorie, UnterKategorie
 from django.http import HttpResponse, HttpResponseForbidden
 
 
@@ -22,6 +22,18 @@ class UnternehmenViewSet(viewsets.ModelViewSet):
     queryset = Unternehmen.objects.all()
     serializer_class = UnternehmenSerializer
     http_method_names = ['get', 'post']
+
+
+class OberKategorienViewSet(viewsets.ModelViewSet):
+    queryset = OberKategorie.objects.all()
+    serializer_class = OberKategorienSerializer
+    http_method_names = ['get']
+
+
+class UnterKategorienViewSet(viewsets.ModelViewSet):
+    queryset = UnterKategorie.objects.all()
+    serializer_class = UnterKategorienSerializer
+    http_method_names = ['get']
 
 
 def confirm_purchase(request, id):

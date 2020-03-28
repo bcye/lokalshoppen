@@ -1,10 +1,12 @@
 from django.contrib import admin
-from .models import Anfrage, TimeSlot, Unternehmen
+from .models import Anfrage, TimeSlot, Unternehmen, OberKategorie, UnterKategorie
 from django.contrib.gis.admin import OSMGeoAdmin
 
 # Register your models here.
 admin.site.register(Anfrage)
 admin.site.register(TimeSlot)
+admin.site.register(OberKategorie)
+admin.site.register(UnterKategorie)
 
 
 @admin.register(Unternehmen)
