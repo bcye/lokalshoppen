@@ -10,10 +10,25 @@ class OberKategorie(models.Model):
     slug = models.CharField(max_length=3)
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Oberkategorie"
+        verbose_name_plural = "Oberkategorien"
+
 
 class UnterKategorie(models.Model):
     slug = models.CharField(max_length=5)
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Unterkategorie"
+        verbose_name_plural = "Unterkategorien"
+
 
 class Unternehmen(models.Model):
     email = models.EmailField()
@@ -28,13 +43,19 @@ class Unternehmen(models.Model):
     ober_kategorien = models.ManyToManyField(OberKategorie)
     unter_kategorien = models.ManyToManyField(UnterKategorie)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Unternehmen"
+        verbose_name_plural = "Unternehmen"
 
 class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     count = models.PositiveSmallIntegerField(default=0)
     unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
-
+    
 
 class Anfrage(models.Model):
     unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
@@ -50,3 +71,7 @@ class Anfrage(models.Model):
         self.slot.count += 1
         self.slot.save()
         return super().save(**kwargs)
+
+    class Meta:
+        verbose_name = "Anfrage"
+        verbose_name_plural = "Anfragen"
