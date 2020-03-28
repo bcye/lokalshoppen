@@ -1,12 +1,12 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from .models import Anfrage, UnternehmensProfil
+from .models import Anfrage, Unternehmen
 from django.core.mail import send_mail
 from django.urls import reverse
 from lokalshoppen.settings import DOMAIN_NAME
 
 
-@receiver(pre_save, sender=Anfrage)
+@receiver(post_save, sender=Anfrage)
 def send_confirmation(sender, instance, created, **kwargs):
     #
     # MAIL SENDING
@@ -58,7 +58,7 @@ def send_confirmation(sender, instance, created, **kwargs):
         Das Bleib Lokal! Team
         """,
         "bot@sandbox057220bc5f0c4c72bdd948cdc6745604.mailgun.org",
-        [instance.unternehmen_id.email],
+        [instance.unternehmen.email],
         fail_silently=False
     )
 

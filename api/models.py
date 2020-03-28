@@ -2,21 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import JSONField
+from django.contrib.gis.db import models as geo_models
 
 
-class TimeSlot(models.Model):
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    count = models.PositiveSmallIntegerField(default=0)
-    unternehmen = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-
-class UnternehmensProfil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Unternehmen(models.Model):
+    email = models.EmailField()
     name = models.TextField()
     adresse = models.TextField()
-    langitude = models.TextField()
-    longitude = models.TextField()
+    point = geo_models.PointField(null=True)
     telefon = models.TextField()
     max_pro_slot = models.PositiveSmallIntegerField()
     oeffnungszeiten = JSONField()
@@ -50,8 +43,16 @@ class UnternehmensProfil(models.Model):
     unter_kategorien = models.TextField()
 
 
+
+class TimeSlot(models.Model):
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    count = models.PositiveSmallIntegerField(default=0)
+    unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
+
+
 class Anfrage(models.Model):
-    unternehmen_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
     kunden_email = models.EmailField()
     text = models.CharField(max_length=500)
     approved = models.BooleanField()

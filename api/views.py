@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import AnfrageSerializer, UnternehmensProfilSerializer
-from .models import Anfrage, UnternehmensProfil
+from .serializers import AnfrageSerializer, UnternehmenSerializer
+from .models import Anfrage, Unternehmen
 from django.http import HttpResponse, HttpResponseForbidden
 
 
@@ -12,15 +12,16 @@ class AnfrageViewSet(viewsets.ModelViewSet):
     """
     queryset = Anfrage.objects.all()
     serializer_class = AnfrageSerializer
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+    http_method_names = ['post']
+
 
 class UnternehmenViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Unternehmen to be viewed or edited.
     """
-    queryset = UnternehmensProfil.objects.all()
-    serializer_class = UnternehmensProfilSerializer
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+    queryset = Unternehmen.objects.all()
+    serializer_class = UnternehmenSerializer
+    http_method_names = ['get', 'post']
 
 
 def confirm_purchase(request, id):
