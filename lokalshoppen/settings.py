@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'api.apps.ApiConfig',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -166,3 +167,7 @@ EMAIL_PORT = os.getenv('SMTP_PORT')
 EMAIL_USE_TLS = True
 
 DOMAIN_NAME = os.getenv('DOMAIN_NAME')
+
+GRAPHENE = {
+    'SCHEMA': 'lokalshoppen.schema.schema'
+}

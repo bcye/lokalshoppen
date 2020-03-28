@@ -1,6 +1,9 @@
 from django.urls import include, path
 from rest_framework import routers
 from api import views
+from django.conf.urls import url
+from graphene_django.views import GraphQLView
+
 
 router = routers.DefaultRouter()
 router.register(r'anfragen', views.AnfrageViewSet)
@@ -13,5 +16,5 @@ router.register(r'unter_kategorien', views.UnterKategorienViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('confirm/<int:id>/', views.confirm_purchase, name="confirm"),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
