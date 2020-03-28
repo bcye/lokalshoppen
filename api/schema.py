@@ -1,7 +1,7 @@
 # cookbook/ingredients/schema.py
 import graphene
 from graphene_django.types import DjangoObjectType
-from .models import Anfrage, UnterKategorie, OberKategorie, Unternehmen
+from .models import Anfrage, UnterKategorie, OberKategorie, Unternehmen, TimeSlot
 import graphql_geojson
 
 class AnfrageType(DjangoObjectType):
@@ -15,6 +15,11 @@ class OberKategorieType(DjangoObjectType):
 class UnterKategorieType(DjangoObjectType):
     class Meta:
         model = UnterKategorie
+
+class TimeSlotType(DjangoObjectType):
+    class Meta:
+        model = TimeSlot
+
 
 class UnternehmenType(graphql_geojson.GeoJSONType):
     class Meta:
