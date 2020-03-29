@@ -93,6 +93,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lokalshoppen.wsgi.application'
 
+# Database
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -142,20 +155,6 @@ REST_FRAMEWORK = {
 
 # Activate Django-Heroku. But allow database to set to postgis afterwards
 django_heroku.settings(locals())
-
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASS'),
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
