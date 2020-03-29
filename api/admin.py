@@ -1,25 +1,25 @@
 from django.contrib import admin
-from .models import Anfrage, TimeSlot, Unternehmen, OberKategorie, UnterKategorie
+from .models import Request, TimeSlot, Company, Category, SubCategory
 from django.contrib.gis.admin import OSMGeoAdmin
 
-class KategorieAdmin(admin.ModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ("slug", "name")
     search_fields = ("name", "slug")
 
 # Register your models here.
-admin.site.register(Anfrage)
+admin.site.register(Request)
 admin.site.register(TimeSlot)
-admin.site.register(OberKategorie, KategorieAdmin)
-admin.site.register(UnterKategorie, KategorieAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(SubCategory, CategoryAdmin)
 
 
-@admin.register(Unternehmen)
-class UnternehmenAdmin(OSMGeoAdmin):
+@admin.register(Company)
+class CompanyAdmin(OSMGeoAdmin):
     default_lat = 6685128
     default_lon = 1138794
     default_zoom = 5
 
-    search_fields = ("name", "email", "telefon")
-    list_display = ("name", "email", "telefon")
-    autocomplete_fields = ("ober_kategorien", "unter_kategorien")
+    search_fields = ("name", "email", "phone")
+    list_display = ("name", "email", "phone")
+    autocomplete_fields = ("category", "sub_categories")
 

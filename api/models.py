@@ -6,7 +6,7 @@ from django_better_admin_arrayfield.models.fields import ArrayField
 from django.contrib.gis.db import models as geo_models
 
 
-class OberKategorie(models.Model):
+class Category(models.Model):
     slug = models.CharField(max_length=3)
     name = models.CharField(max_length=100)
 
@@ -14,11 +14,10 @@ class OberKategorie(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Oberkategorie"
-        verbose_name_plural = "Oberkategorien"
+        verbose_name_plural = "categories"
 
 
-class UnterKategorie(models.Model):
+class SubCategory(models.Model):
     slug = models.CharField(max_length=5)
     name = models.CharField(max_length=100)
 
@@ -26,39 +25,41 @@ class UnterKategorie(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Unterkategorie"
-        verbose_name_plural = "Unterkategorien"
+        verbose_name_plural = "sub categories"
 
 
-class Unternehmen(models.Model):
+class Company(models.Model):
     email = models.EmailField()
-    name = models.TextField()
-    adresse = models.TextField()
-    point = geo_models.PointField(null=True)
-    telefon = models.TextField()
-    max_pro_slot = models.PositiveSmallIntegerField()
-    oeffnungszeiten = JSONField()
-    beschreibung = models.TextField()
-    active = models.BooleanField(default=False)
-    ober_kategorien = models.ManyToManyField(OberKategorie)
-    unter_kategorien = models.ManyToManyField(UnterKategorie)
+    name = models.CharField(max_length=200)
+    address = models.TextField()
+    location = geo_models.PointField(null=True)
+    phone = models.CharField(max_length=30, help_text="Use international format: e.g. +491235565")
+    max_per_slot = models.PositiveSmallIntegerField(help_text="Maximum number of persons who can book a particular time slot")
+    business_hours = JSONField()
+    description = models.TextField(blank=True)
+
+    active = models.BooleanField(default=False, help_text="The company is only listed in the map when this flag is active")
+
+    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    sub_categories = models.ManyToManyField(SubCategory)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "Unternehmen"
-        verbose_name_plural = "Unternehmen"
+        verbose_name_plural = "companies    "
+
+
 
 class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
-    unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
+    company = models.ForeignKey("Company", on_delete=models.CASCADE, null=True)
     
 
-class Anfrage(models.Model):
-    unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
-    kunden_email = models.EmailField()
+class Request(models.Model):
+    company = models.ForeignKey("Company", on_delete=models.CASCADE, null=True)
+    customer_email = models.EmailField()
     text = models.CharField(max_length=500)
     approved = models.BooleanField()
     slot = models.ForeignKey(TimeSlot, on_delete=models.PROTECT)
@@ -71,6 +72,3 @@ class Anfrage(models.Model):
         self.slot.save()
         return super().save(**kwargs)
 
-    class Meta:
-        verbose_name = "Anfrage"
-        verbose_name_plural = "Anfragen"
