@@ -167,5 +167,7 @@ EMAIL_USE_TLS = True
 DOMAIN_NAME = os.getenv('DOMAIN_NAME')
 
 GRAPHENE = {
-    'SCHEMA': 'lokalshoppen.schema.schema'
+    'SCHEMA': 'lokalshoppen.schema.schema',
+    'SCHEMA_OUTPUT': 'staticfiles/schema.json',  # defaults to schema.json,
+    'SCHEMA_INDENT': 3,  # Defaults to None (displays all data on a single line)
 }
