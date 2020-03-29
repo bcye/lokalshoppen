@@ -93,7 +93,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lokalshoppen.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -107,7 +106,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -155,7 +153,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-# Activate Django-Heroku.
+# Activate Django-Heroku. But allow database to set to postgis afterwards
 django_heroku.settings(locals())
 
 CORS_ORIGIN_ALLOW_ALL = True
