@@ -1,0 +1,178 @@
+[
+{
+   "model": "api.category",
+   "pk": 1,
+   "fields": {
+      "slug": "RAU",
+      "name": "Raucherbedarf"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 2,
+   "fields": {
+      "slug": "BLU",
+      "name": "Blumen"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 4,
+   "fields": {
+      "slug": "LEB",
+      "name": "Lebensmittel"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 5,
+   "fields": {
+      "slug": "BAE",
+      "name": "B\u00e4ckerei"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 6,
+   "fields": {
+      "slug": "FLE",
+      "name": "Fleischerei"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 7,
+   "fields": {
+      "slug": "GET",
+      "name": "Getr\u00e4nke"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 8,
+   "fields": {
+      "slug": "DRO",
+      "name": "Drogerie"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 9,
+   "fields": {
+      "slug": "ELE",
+      "name": "Elektronik"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 10,
+   "fields": {
+      "slug": "HWO",
+      "name": "Haushalt & Wohnen"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 11,
+   "fields": {
+      "slug": "WEB",
+      "name": "Werkeln & Basteln"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 12,
+   "fields": {
+      "slug": "SPO",
+      "name": "Sport"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 13,
+   "fields": {
+      "slug": "UNT",
+      "name": "Unterhaltung"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 14,
+   "fields": {
+      "slug": "MOD",
+      "name": "Mode"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 15,
+   "fields": {
+      "slug": "APO",
+      "name": "Apotheke"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 16,
+   "fields": {
+      "slug": "KIO",
+      "name": "Zeitungen & Kiosk"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 17,
+   "fields": {
+      "slug": "BUe",
+      "name": "B\u00fccher"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 18,
+   "fields": {
+      "slug": "TIE",
+      "name": "Tierbedarf"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 19,
+   "fields": {
+      "slug": "BLU",
+      "name": "Blumenladen"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 20,
+   "fields": {
+      "slug": "OUT",
+      "name": "Outdoor"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 21,
+   "fields": {
+      "slug": "SON",
+      "name": "Sonstiges"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 22,
+   "fields": {
+      "slug": "SPI",
+      "name": "Spielwaren"
+   }
+},
+{
+   "model": "api.category",
+   "pk": 23,
+   "fields": {
+      "slug": "SCH",
+      "name": "Schuhe"
+   }
+}
+]
