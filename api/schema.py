@@ -1,48 +1,54 @@
 # cookbook/ingredients/schema.py
 import graphene
-from graphene_django.types import DjangoObjectType
 from .models import Request, SubCategory, Category, Company, TimeSlot
-import graphql_geojson
 
-class RequestType(DjangoObjectType):
+import graphql_geojson
+from graphene import relay, ObjectType
+from graphene_django import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
+
+
+class RequestNode(DjangoObjectType):
     class Meta:
         model = Request
+        interfaces = (relay.Node, )
 
-class CategoryType(DjangoObjectType):
+
+class CategoryNode(DjangoObjectType):
     class Meta:
         model = Category
+        interfaces = (relay.Node, )
 
-class SubCategory(DjangoObjectType):
+        filter_fields = ["name", "slug"]
+
+
+class SubCategoryNode(DjangoObjectType):
     class Meta:
         model = SubCategory
+        interfaces = (relay.Node, )
 
-class TimeSlotType(DjangoObjectType):
+        filter_fields = ["name", "slug"]
+
+
+class TimeSlotNode(DjangoObjectType):
     class Meta:
         model = TimeSlot
+        interfaces = (relay.Node, )
+        filter_fields = ["start", "end"]
 
 
-class CompanyType(graphql_geojson.GeoJSONType):
+
+class CompanyNode(graphql_geojson.GeoJSONType):
     class Meta:
         model = Company
         geojson_field = 'location'
 
+        filter_fields = ["name"]
+        interfaces = (relay.Node, )
+
 class Query(object):
-    all_categories = graphene.List(CategoryType)
-    all_sub_categories = graphene.List(SubCategory)
-    all_companies = graphene.List(CompanyType)
-    all_requests = graphene.List(RequestType)
-
-
-    def resolve_all_categories(self, info, **kwargs):
-        return Category.objects.all()
-
-    def resolve_all_sub_categories(self, info, **kwargs):
-        return SubCategory.objects.all()
-
-    def resolve_all_requests(self, info, **kwargs):
-        return Request.objects.all()
-
-    def resolve_all_companies(self, info, **kwargs):
-        return Company.objects.all()
+    all_categories = DjangoFilterConnectionField(CategoryNode)
+    all_sub_categories = DjangoFilterConnectionField(SubCategoryNode)
+    all_companies = DjangoFilterConnectionField(CompanyNode)
 
 
