@@ -53,7 +53,6 @@ class Unternehmen(models.Model):
 class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
-    count = models.PositiveSmallIntegerField(default=0)
     unternehmen = models.ForeignKey(Unternehmen, on_delete=models.CASCADE, null=True)
     
 
