@@ -155,6 +155,7 @@ REST_FRAMEWORK = {
 
 # Activate Django-Heroku. But allow database to set to postgis afterwards
 django_heroku.settings(locals())
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
