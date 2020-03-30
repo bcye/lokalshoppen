@@ -18,7 +18,8 @@ class CompanyFilter(GeometryFilterSet):
         fields = {
             'name': ['exact'],
             'location': ['exact', 'intersects'],
-            "active": ['exact']
+            "active": ['exact'],
+            "category": ["exact"],
         }
 
 # Node types
