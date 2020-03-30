@@ -64,4 +64,5 @@ class Query(object):
     all_sub_categories = DjangoFilterConnectionField(SubCategoryNode)
     all_companies = DjangoFilterConnectionField(CompanyNode, filterset_class=CompanyFilter)
 
+    company = relay.Node.Field(CompanyNode)
 
