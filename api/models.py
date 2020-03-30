@@ -70,6 +70,9 @@ class TimeSlot(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     company = models.ForeignKey("Company", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.company) + ": " + str(self.start) + " - " + str(self.end.time())
     
 
 class Request(models.Model):

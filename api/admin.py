@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Request, TimeSlot, Company, Category, SubCategory
+from .models import Request, TimeSlot, Company, Category, SubCategory, BusinessHoursWeekday
 from django.contrib.gis.admin import OSMGeoAdmin
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -11,6 +11,7 @@ admin.site.register(Request)
 admin.site.register(TimeSlot)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, CategoryAdmin)
+admin.site.register(BusinessHoursWeekday)
 
 
 @admin.register(Company)
