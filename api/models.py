@@ -34,9 +34,7 @@ class Company(models.Model):
     location = geo_models.PointField()
     phone = models.CharField(max_length=30, help_text="Use international format: e.g. +491235565")
     max_per_slot = models.PositiveSmallIntegerField(help_text="Maximum number of persons who can book a particular time slot", default=2)
-    business_hours = JSONField()
     description = models.TextField(blank=True)
-
     active = models.BooleanField(default=False, help_text="The company is only listed in the map when this flag is active")
 
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
@@ -47,6 +45,25 @@ class Company(models.Model):
 
     class Meta:
         verbose_name_plural = "companies    "
+
+
+class BusinessHoursWeekday(models.Model):
+    WEEKDAYS = (
+        (1, "Monday"),
+        (2, "Tuesday"),
+        (3, "Wednesday"),
+        (4, "Thursday"),
+        (5, "Friday"),
+        (6, "Saturday"),
+        (7, "Sunday"),
+    )
+    weekday = models.PositiveSmallIntegerField(choices=WEEKDAYS)
+    start = models.TimeField()
+    end = models.TimeField()
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.company.name + ' - ' + self.get_weekday_display()
 
 
 class TimeSlot(models.Model):
