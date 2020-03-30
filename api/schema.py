@@ -6,8 +6,22 @@ import graphql_geojson
 from graphene import relay, ObjectType
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
+from graphql_geojson.filters import GeometryFilterSet, DistanceFilter
+from graphql_geojson.fields import DistanceField
+from django.contrib.gis import forms
+from graphene_django.forms.converter import convert_form_field
 
+# Filters
+class CompanyFilter(GeometryFilterSet):
+    class Meta:
+        model = Company
+        fields = {
+            'name': ['exact'],
+            'location': ['exact', 'intersects'],
+            "active": ['exact']
+        }
 
+# Node types
 class RequestNode(DjangoObjectType):
     class Meta:
         model = Request
@@ -43,12 +57,11 @@ class CompanyNode(graphql_geojson.GeoJSONType):
         model = Company
         geojson_field = 'location'
 
-        filter_fields = ["name"]
         interfaces = (relay.Node, )
 
 class Query(object):
     all_categories = DjangoFilterConnectionField(CategoryNode)
     all_sub_categories = DjangoFilterConnectionField(SubCategoryNode)
-    all_companies = DjangoFilterConnectionField(CompanyNode)
+    all_companies = DjangoFilterConnectionField(CompanyNode, filterset_class=CompanyFilter)
 
 
