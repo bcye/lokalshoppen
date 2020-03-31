@@ -82,7 +82,7 @@ class TimeSlot(models.Model):
         return str(self.company) + ": " + str(self.start) + " - " + str(self.end.time())
 
     class Meta:
-        unique_together = ("start", "end")
+        unique_together = ("start", "end", "company")
     
 
 class Request(models.Model):
