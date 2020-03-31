@@ -47,7 +47,7 @@ class Company(models.Model):
         verbose_name_plural = "companies    "
 
 
-class BusinessHoursWeekday(models.Model):
+class BusinessHours(models.Model):
     WEEKDAYS = (
         (1, "Monday"),
         (2, "Tuesday"),
@@ -71,6 +71,13 @@ class TimeSlot(models.Model):
     end = models.DateTimeField()
     company = models.ForeignKey("Company", on_delete=models.CASCADE)
 
+    @property
+    def available(self):
+        if len(Request.objects.filter(slot=self.slot)) < self.company.max_per_slot:
+            return True
+        else:
+            return False
+
     def save(self, *args, **kwargs):
         if TimeSlot.objects.filter(company=self.company, start=self.start, end=self.end).exists():
             raise ValidationError("TimeSlot exists already, this TimeSlot was not saved...")
@@ -89,7 +96,7 @@ class Request(models.Model):
     slot = models.ForeignKey(TimeSlot, on_delete=models.PROTECT)
 
     def save(self, *args, **kwargs):
-        if len(Request.objects.filter(slot=self.slot)) > self.company.max_per_slot:
+        if not self.slot.available:
             raise ValidationError("The chosen TimeSlot does not accept anymore requests: " + str(self.slot))
 
         return super().save(*args, **kwargs)

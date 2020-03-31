@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from api.models import TimeSlot, Company, BusinessHoursWeekday
+from api.models import TimeSlot, Company, BusinessHours
 from django.utils.timezone import datetime, timedelta
 import pytz
 from lokalshoppen.settings import TIME_ZONE
@@ -11,7 +11,7 @@ TZ = pytz.timezone(TIME_ZONE)
 def create_timeslot_day(company, date):
     # get the business hours for that weekday
     weekday = date.isoweekday()
-    biz_hours_set = BusinessHoursWeekday.objects.filter(company=company, weekday=weekday)
+    biz_hours_set = BusinessHours.objects.filter(company=company, weekday=weekday)
 
     # a day can have multiple business hours
     # i.e. 10-15 and 16-18
