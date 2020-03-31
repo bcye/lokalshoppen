@@ -6,8 +6,11 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ("slug", "name")
     search_fields = ("name", "slug")
 
+class RequestAdmin(admin.ModelAdmin):
+    list_display = ("company", "customer_email", "slot")
+
 # Register your models here.
-admin.site.register(Request)
+admin.site.register(Request, RequestAdmin)
 admin.site.register(TimeSlot)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, CategoryAdmin)

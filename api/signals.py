@@ -25,8 +25,8 @@ def send_confirmation(sender, instance, created, **kwargs):
             Das Bleib Lokal! Team
             """,
             "bot@sandbox057220bc5f0c4c72bdd948cdc6745604.mailgun.org",
-            [instance.kunden_email],
-            fail_silently=False
+            [instance.customer_email],
+            fail_silently=True
         )
 
         return
@@ -37,7 +37,7 @@ def send_confirmation(sender, instance, created, **kwargs):
         f"""
         Hallo,
         
-        es ist gerade eine Abhol Anfrage von {instance.kunden_email} eingegangen.
+        es ist gerade eine Abhol Anfrage von {instance.customer_email} eingegangen.
         Der Kunde möchte folgenden Artikel am tt.mm.yy zwischen hh:mm und hh:mm abholen:
         {instance.text}
 
@@ -47,7 +47,7 @@ def send_confirmation(sender, instance, created, **kwargs):
         Wie sende ich eine PayPal-Rechnung? 
         1. Loggen Sie sich unter https://paypal.de/login in Ihren Account ein.
         2. Klicken Sie auf Tools > Geld anfordern
-        3. Tragen Sie die E-Mail-Adresse {instance.kunden_email} ein und klicken auf "Weiter".
+        3. Tragen Sie die E-Mail-Adresse {instance.customer_email} ein und klicken auf "Weiter".
         4. Tragen Sie den Endbetrag ein, den der Kunde zu zahlen hat. 
         5. Sie können optional auch eine Mitteilung an den Kunden eintragen, beispielsweise eine Abholnummer.
         6. Klicken Sie auf "Geld anfordern"
@@ -58,8 +58,8 @@ def send_confirmation(sender, instance, created, **kwargs):
         Das Bleib Lokal! Team
         """,
         "bot@sandbox057220bc5f0c4c72bdd948cdc6745604.mailgun.org",
-        [instance.unternehmen.email],
-        fail_silently=False
+        [instance.company.email],
+        fail_silently=True
     )
 
     # zum kunden
@@ -75,6 +75,6 @@ def send_confirmation(sender, instance, created, **kwargs):
         Das Bleib Lokal! Team
         """,
         "bot@sandbox057220bc5f0c4c72bdd948cdc6745604.mailgun.org",
-        [instance.kunden_email],
-        fail_silently=False
+        [instance.customer_email],
+        fail_silently=True
     )

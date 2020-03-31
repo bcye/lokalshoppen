@@ -72,7 +72,7 @@ class TimeSlot(models.Model):
     company = models.ForeignKey("Company", on_delete=models.CASCADE)
 
     def check_available(self):
-        return len(Request.objects.filter(slot=self.slot)) < self.company.max_per_slot
+        return self.request_set.count() < self.company.max_per_slot
 
     def __str__(self):
         return str(self.company) + ": " + str(self.start) + " - " + str(self.end.time())

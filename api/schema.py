@@ -11,6 +11,8 @@ from graphql_geojson.fields import DistanceField
 from django.contrib.gis import forms
 from graphene_django.forms.converter import convert_form_field
 from django.db.models import Prefetch, Count, F
+from graphene_django.forms.mutation import DjangoModelFormMutation
+from graphql_relay import from_global_id
 
 # Filters
 class CompanyFilter(GeometryFilterSet):
@@ -83,4 +85,51 @@ class Query(object):
             )
         )
 
+
+class CreateRequest(relay.ClientIDMutation):
+    class Input:
+        company_id = graphene.ID(required=True)
+        slot_id = graphene.ID(required=True)
+        customer_email = graphene.String(required=True)
+        text = graphene.String(required=True)
+
+    data = graphene.Field(RequestNode)
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        request = Request()
+        request.text = input["text"]    
+        request.customer_email = input["customer_email"]
+        request.company_id = from_global_id(input["company_id"])[1]
+        request.slot_id = from_global_id(input["slot_id"])[1]
+
+        request.save()
+        return CreateRequest(data=request)
+
+class CreateCompany(relay.ClientIDMutation):
+    class Input:
+        name = graphene.String(required=True)
+        address = graphene.String(required=True)
+        email = graphene.String(required=True)
+        description = graphene.String(required=True)
+        location = graphql_geojson.Geometry(required=True)
+        category_id = graphene.ID(required=True)
+        sub_category_ids = graphene.List(graphene.ID)
+        phone = graphene.String()
+
+    data = graphene.Field(CompanyNode)
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        sub_categories = [from_global_id(x)[1] for x in input.pop("sub_category_ids", [])]
+
+        input["category_id"] = from_global_id(input["category_id"])[1]
+        company = Company.objects.create(**input)
+        company.sub_categories.set(sub_categories)
+        
+        return CreateRequest(data=company)
+
+class Mutations(graphene.ObjectType):
+    createRequest = CreateRequest.Field()
+    createCompany = CreateCompany.Field()
 
