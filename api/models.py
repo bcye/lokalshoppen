@@ -78,14 +78,11 @@ class TimeSlot(models.Model):
         else:
             return False
 
-    def save(self, *args, **kwargs):
-        if TimeSlot.objects.filter(company=self.company, start=self.start, end=self.end).exists():
-            raise ValidationError("TimeSlot exists already, this TimeSlot was not saved...")
-
-        return super().save(*args, **kwargs)
-
     def __str__(self):
         return str(self.company) + ": " + str(self.start) + " - " + str(self.end.time())
+
+    class Meta:
+        unique_together = ("start", "end")
     
 
 class Request(models.Model):
