@@ -71,6 +71,12 @@ class TimeSlot(models.Model):
     end = models.DateTimeField()
     company = models.ForeignKey("Company", on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        if TimeSlot.objects.filter(company=self.company, start=self.start, end=self.end).exists():
+            raise ValidationError("TimeSlot exists already, this TimeSlot was not saved...")
+
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return str(self.company) + ": " + str(self.start) + " - " + str(self.end.time())
     
@@ -82,11 +88,8 @@ class Request(models.Model):
     approved = models.BooleanField(default=False)
     slot = models.ForeignKey(TimeSlot, on_delete=models.PROTECT)
 
-    # def save(self, **kwargs):
-    #     if (self.slot.count + 1) > self.unternehmen_id.unternehmensprofil.max_pro_slot or self.slot.day.unternehmen.unternehmensprofil is not self.unternehmen_id.unternehmensprofil:
-    #         raise ValidationError("TimeSlot already filled or wrong slot selected")
-    #
-    #     self.slot.count += 1
-    #     self.slot.save()
-    #     return super().save(**kwargs)
+    def save(self, *args, **kwargs):
+        if len(Request.objects.filter(slot=self.slot)) > self.company.max_per_slot:
+            raise ValidationError("The chosen TimeSlot does not accept anymore requests: " + str(self.slot))
 
+        return super().save(*args, **kwargs)
