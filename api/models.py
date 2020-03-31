@@ -71,12 +71,8 @@ class TimeSlot(models.Model):
     end = models.DateTimeField()
     company = models.ForeignKey("Company", on_delete=models.CASCADE)
 
-    @property
-    def available(self):
-        if len(Request.objects.filter(slot=self.slot)) < self.company.max_per_slot:
-            return True
-        else:
-            return False
+    def check_available(self):
+        return len(Request.objects.filter(slot=self.slot)) < self.company.max_per_slot
 
     def __str__(self):
         return str(self.company) + ": " + str(self.start) + " - " + str(self.end.time())
@@ -93,7 +89,7 @@ class Request(models.Model):
     slot = models.ForeignKey(TimeSlot, on_delete=models.PROTECT)
 
     def save(self, *args, **kwargs):
-        if not self.slot.available:
-            raise ValidationError("The chosen TimeSlot does not accept anymore requests: " + str(self.slot))
+        if not self.slot.check_available():
+            raise ValidationError("The chosen TimeSlot does not accept requests anymore: " + str(self.slot))
 
         return super().save(*args, **kwargs)
