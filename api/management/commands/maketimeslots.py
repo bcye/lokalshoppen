@@ -13,6 +13,8 @@ def create_timeslot_day(company, date):
     weekday = date.isoweekday()
     biz_hours_set = BusinessHours.objects.filter(company=company, weekday=weekday)
 
+    print("Generating for: " + str(date))
+
     # a day can have multiple business hours
     # i.e. 10-15 and 16-18
     for biz_hours in biz_hours_set:
@@ -46,14 +48,17 @@ def create_timeslot_set(company):
     date = datetime.today()
     in_one_week = (date + timedelta(days=7))
 
+    print("Generating Set...")
+
     while date < in_one_week:
-        print("Generating for: " + str(date))
 
         # create timeslots
         create_timeslot_day(company, date)
 
         # increment day
         date += timedelta(days=1)
+
+    print("Ended generating set...")
 
 
 class Command(BaseCommand):
