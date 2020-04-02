@@ -116,6 +116,7 @@ class CreateCompany(relay.ClientIDMutation):
         category_id = graphene.ID(required=True)
         sub_category_ids = graphene.List(graphene.ID)
         phone = graphene.String()
+        max_per_slot = graphene.Int()
 
     data = graphene.Field(CompanyNode)
 
