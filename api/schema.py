@@ -73,6 +73,15 @@ class CompanyNode(graphql_geojson.GeoJSONType):
 
         interfaces = (relay.Node, )
 
+# Filtered company queryset used by GraphQL endpoints
+company_queryset = Company.objects.all().prefetch_related(
+            Prefetch(
+                "timeslot_set",
+                queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot")-Count("request")).filter(start__gte=timezone.now())
+            )).filter(
+                active=True,
+            )
+
 class Query(object):
     all_categories = DjangoFilterConnectionField(CategoryNode)
     all_sub_categories = DjangoFilterConnectionField(SubCategoryNode)
@@ -80,15 +89,12 @@ class Query(object):
 
     company = relay.Node.Field(CompanyNode)
 
+    def resolve_company(self, info, pk):
+        return company_queryset.get(pk=pk)
+
+
     def resolve_all_companies(self, info, **kwargs):
-        return Company.objects.all().prefetch_related(
-            Prefetch(
-                "timeslot_set",
-                queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot")-Count("request")).filter(start__gte=timezone.now())
-            )).filter(
-                active=True,
-            )
-        
+        return company_queryset
 
 
 class CreateRequest(relay.ClientIDMutation):
