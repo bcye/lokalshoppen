@@ -28,7 +28,7 @@ class SubCategory(models.Model):
 
 
 class Company(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     name = models.CharField(max_length=200)
     address = models.TextField()
     location = geo_models.PointField()
