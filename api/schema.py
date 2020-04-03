@@ -56,6 +56,8 @@ class BusinessHours(DjangoObjectType):
 
 class TimeSlotNode(DjangoObjectType):
     available = graphene.Boolean()
+    def resolve_available(parent, info):
+        return parent.available > 0
 
     class Meta:
         model = TimeSlot
