@@ -17,10 +17,6 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
-sentry_sdk.init(
-    dsn="https://732d33dd13754c00be9ff3f667155b19@sentry.io/5187844",
-    integrations=[DjangoIntegration()],
-)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,6 +33,12 @@ def debug_val():
     return (os.getenv('DEBUG') == "True")
 
 DEBUG = debug_val()
+
+if DEBUG == False:
+    sentry_sdk.init(
+        dsn="https://732d33dd13754c00be9ff3f667155b19@sentry.io/5187844",
+        integrations=[DjangoIntegration()],
+    )
 
 # DEPLOY
 SECURE_SSL_REDIRECT = not debug_val()
