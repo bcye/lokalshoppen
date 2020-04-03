@@ -48,7 +48,8 @@ CSRF_COOKIE_SECURE = not debug_val()
 
 ALLOWED_HOSTS = [
     'localhost',
-    'nameless-retreat-67960.herokuapp.com'
+    'nameless-retreat-67960.herokuapp.com',
+    'bleiblokal-dev.herokuapp.com',
 ]
 
 

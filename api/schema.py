@@ -15,6 +15,7 @@ from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_relay import from_global_id
 from django.utils import timezone
 
+
 # Filters
 class CompanyFilter(GeometryFilterSet):
     class Meta:
@@ -25,6 +26,7 @@ class CompanyFilter(GeometryFilterSet):
             "active": ['exact'],
             "category": ["exact"],
         }
+
 
 # Node types
 class RequestNode(DjangoObjectType):
@@ -48,6 +50,7 @@ class SubCategoryNode(DjangoObjectType):
 
         filter_fields = ["name", "slug"]
 
+
 class BusinessHours(DjangoObjectType):
     class Meta:
         model = BusinessHours
@@ -65,7 +68,6 @@ class TimeSlotNode(DjangoObjectType):
         filter_fields = ["start", "end"]
 
 
-
 class CompanyNode(graphql_geojson.GeoJSONType):
     class Meta:
         model = Company
@@ -81,6 +83,7 @@ company_queryset = Company.objects.all().prefetch_related(
             )).filter(
                 active=True,
             )
+
 
 class Query(object):
     all_categories = DjangoFilterConnectionField(CategoryNode)
@@ -117,6 +120,7 @@ class CreateRequest(relay.ClientIDMutation):
         request.save()
         return CreateRequest(data=request)
 
+
 class CreateCompany(relay.ClientIDMutation):
     class Input:
         name = graphene.String(required=True)
@@ -140,6 +144,7 @@ class CreateCompany(relay.ClientIDMutation):
         company.sub_categories.set(sub_categories)
         
         return CreateRequest(data=company)
+
 
 class Mutations(graphene.ObjectType):
     createRequest = CreateRequest.Field()
