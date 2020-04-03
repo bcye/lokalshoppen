@@ -13,6 +13,7 @@ from graphene_django.forms.converter import convert_form_field
 from django.db.models import Prefetch, Count, F
 from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_relay import from_global_id
+from django.utils import timezone
 
 # Filters
 class CompanyFilter(GeometryFilterSet):
@@ -81,9 +82,11 @@ class Query(object):
         return Company.objects.all().prefetch_related(
             Prefetch(
                 "timeslot_set",
-                queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot")-Count("request"))
+                queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot")-Count("request")).filter(start__gte=timezone.now())
+            )).filter(
+                active=True,
             )
-        )
+        
 
 
 class CreateRequest(relay.ClientIDMutation):
