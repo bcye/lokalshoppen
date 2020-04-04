@@ -15,7 +15,6 @@ from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_relay import from_global_id
 from django.utils import timezone
 
-
 # Filters
 class CompanyFilter(GeometryFilterSet):
     class Meta:
@@ -26,7 +25,6 @@ class CompanyFilter(GeometryFilterSet):
             "active": ['exact'],
             "category": ["exact"],
         }
-
 
 # Node types
 class RequestNode(DjangoObjectType):
@@ -50,8 +48,7 @@ class SubCategoryNode(DjangoObjectType):
 
         filter_fields = ["name", "slug"]
 
-
-class BusinessHours(DjangoObjectType):
+class BusinessHoursNode(DjangoObjectType):
     class Meta:
         model = BusinessHours
         interfaces = (relay.Node, )
@@ -66,6 +63,7 @@ class TimeSlotNode(DjangoObjectType):
         model = TimeSlot
         interfaces = (relay.Node, )
         filter_fields = ["start", "end"]
+
 
 
 class CompanyNode(graphql_geojson.GeoJSONType):
@@ -83,7 +81,6 @@ company_queryset = Company.objects.all().prefetch_related(
             )).filter(
                 active=True,
             )
-
 
 class Query(object):
     all_categories = DjangoFilterConnectionField(CategoryNode)
@@ -120,6 +117,11 @@ class CreateRequest(relay.ClientIDMutation):
         request.save()
         return CreateRequest(data=request)
 
+class BusinessHoursInput(graphene.InputObjectType):
+    start = graphene.Time()
+    end = graphene.Time()
+    weekday = graphene.Enum("WeekdayType", [(label, key) for key, label in BusinessHours.WEEKDAYS])()
+
 
 class CreateCompany(relay.ClientIDMutation):
     class Input:
@@ -132,19 +134,23 @@ class CreateCompany(relay.ClientIDMutation):
         sub_category_ids = graphene.List(graphene.ID)
         phone = graphene.String()
         max_per_slot = graphene.Int()
+        business_hours_set = graphene.List(BusinessHoursInput)
+
 
     data = graphene.Field(CompanyNode)
 
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
         sub_categories = [from_global_id(x)[1] for x in input.pop("sub_category_ids", [])]
-
+        business_hours = input.pop("business_hours_set", [])
         input["category_id"] = from_global_id(input["category_id"])[1]
         company = Company.objects.create(**input)
         company.sub_categories.set(sub_categories)
+
+        for bhdata in business_hours:
+            company.businesshours_set.create(**bhdata)
         
         return CreateRequest(data=company)
-
 
 class Mutations(graphene.ObjectType):
     createRequest = CreateRequest.Field()
