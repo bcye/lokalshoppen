@@ -57,7 +57,10 @@ class BusinessHoursNode(DjangoObjectType):
 class TimeSlotNode(DjangoObjectType):
     available = graphene.Boolean()
     def resolve_available(parent, info):
-        return parent.available > 0
+        if hasattr(parent, "available"):
+            return parent.available > 0
+        else:
+            return parent.check_available()
 
     class Meta:
         model = TimeSlot
@@ -88,10 +91,6 @@ class Query(object):
     all_companies = DjangoFilterConnectionField(CompanyNode, filterset_class=CompanyFilter)
 
     company = relay.Node.Field(CompanyNode)
-
-    def resolve_company(self, info, pk):
-        return company_queryset.get(pk=pk)
-
 
     def resolve_all_companies(self, info, **kwargs):
         return company_queryset
