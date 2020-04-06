@@ -59,7 +59,7 @@ def send_confirmation(sender, instance, created, **kwargs):
         """,
         "delivery-noreply@bleiblokal.com",
         [instance.company.email],
-        fail_silently=True
+        fail_silently=False
     )
 
     # zum kunden
@@ -76,5 +76,5 @@ def send_confirmation(sender, instance, created, **kwargs):
         """,
         "delivery-noreply@bleiblokal.com",
         [instance.customer_email],
-        fail_silently=True
+        fail_silently=False
     )
