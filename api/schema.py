@@ -77,7 +77,8 @@ class CompanyNode(graphql_geojson.GeoJSONType):
         interfaces = (relay.Node, )
 
 # Filtered company queryset used by GraphQL endpoints
-company_queryset = Company.objects.all().prefetch_related(
+def get_company_queryset():
+    return Company.objects.all().prefetch_related(
             Prefetch(
                 "timeslot_set",
                 queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot")-Count("request")).filter(start__gte=timezone.now())
@@ -93,7 +94,7 @@ class Query(object):
     company = relay.Node.Field(CompanyNode)
 
     def resolve_all_companies(self, info, **kwargs):
-        return company_queryset
+        return get_company_queryset()
 
 
 class CreateRequest(relay.ClientIDMutation):
