@@ -21,6 +21,8 @@ def send_confirmation(sender, instance, created, **kwargs):
             ihre Bestellung wurde von dem Laden akzeptiert und sie sollten in Kürze eine Rechnung durch PayPal empfangen.
             Bitte bezahlen Sie diese vor dem Abholtermin.
 
+            Zu ihrer Errinerung, ihre Abholung erfolgt am {str(instance.slot.start.date())} zwischen {str(instance.slot.start.time())} und {str(instance.slot.end.time())}.
+
             Vielen Dank,
             Das Bleib Lokal! Team
             """,
@@ -38,7 +40,7 @@ def send_confirmation(sender, instance, created, **kwargs):
         Hallo,
         
         es ist gerade eine Abhol Anfrage von {instance.customer_email} eingegangen.
-        Der Kunde möchte folgenden Artikel am tt.mm.yy zwischen hh:mm und hh:mm abholen:
+        Der Kunde möchte folgenden Artikel am {str(instance.slot.start.date())} zwischen {str(instance.slot.start.time())} und {str(instance.slot.end.time())} abholen:
         {instance.text}
 
         Wenn Sie diese akzeptieren wollen, schicken sie bitte eine PayPal Rechnung an den Kunden, und klicken auf folgenden Link:
