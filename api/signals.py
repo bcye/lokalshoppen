@@ -26,7 +26,7 @@ def send_confirmation(sender, instance, created, **kwargs):
             Vielen Dank,
             Das Bleib Lokal! Team
             """,
-            "bot@sandbox057220bc5f0c4c72bdd948cdc6745604.mailgun.org",
+            "delivery-noreply@bleiblokal.com",
             [instance.customer_email],
             fail_silently=True
         )
@@ -44,7 +44,7 @@ def send_confirmation(sender, instance, created, **kwargs):
         {instance.text}
 
         Wenn Sie diese akzeptieren wollen, schicken sie bitte eine PayPal Rechnung an den Kunden, und klicken auf folgenden Link:
-        {DOMAIN_NAME + reverse('confirm', args=(instance.pk,))}
+        https://{DOMAIN_NAME + reverse('confirm', args=(instance.pk,))}
         
         Wie sende ich eine PayPal-Rechnung? 
         1. Loggen Sie sich unter https://paypal.de/login in Ihren Account ein.
