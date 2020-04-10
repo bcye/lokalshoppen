@@ -4,7 +4,7 @@ from .models import Request, Company
 from django.core.mail import send_mail
 from django.urls import reverse
 from lokalshoppen.settings import DOMAIN_NAME
-
+from django.core.management import call_command
 
 @receiver(post_save, sender=Request)
 def send_confirmation(sender, instance, created, **kwargs):
@@ -80,3 +80,9 @@ def send_confirmation(sender, instance, created, **kwargs):
         [instance.customer_email],
         fail_silently=False
     )
+
+
+@receiver(post_save, sender=Company)
+def maketimeslots(sender, instance, **kwargs):
+    if instance.active:
+        call_command("maketimeslots")
