@@ -56,17 +56,21 @@ class BusinessHoursNode(DjangoObjectType):
 
 class TimeSlotNode(DjangoObjectType):
     available = graphene.Boolean()
+
     def resolve_available(parent, info):
         if hasattr(parent, "available"):
             return parent.available > 0
         else:
             return parent.check_available()
 
+    @classmethod
+    def get_queryset(cls, queryset, info):
+        return queryset.filter(start__gte=timezone.now())
+
     class Meta:
         model = TimeSlot
         interfaces = (relay.Node, )
         filter_fields = ["start", "end"]
-
 
 
 class CompanyNode(graphql_geojson.GeoJSONType):
