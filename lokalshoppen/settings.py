@@ -44,7 +44,7 @@ if DEBUG == False:
 SECURE_SSL_REDIRECT = not debug_val()
 SESSION_COOKIE_SECURE = not debug_val()
 CSRF_COOKIE_SECURE = not debug_val()
-SECURE_HSTS_SECONDS = 1800 if debug_val() else None
+SECURE_HSTS_SECONDS = 31536000 if debug_val() else None
 
 
 ALLOWED_HOSTS = [
