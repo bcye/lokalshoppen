@@ -41,9 +41,10 @@ if DEBUG == False:
     )
 
 # DEPLOY
-# SECURE_SSL_REDIRECT = not debug_val()
+SECURE_SSL_REDIRECT = not debug_val()
 SESSION_COOKIE_SECURE = not debug_val()
 CSRF_COOKIE_SECURE = not debug_val()
+SECURE_HSTS_SECONDS = 1800 if debug_val() else None
 
 
 ALLOWED_HOSTS = [
