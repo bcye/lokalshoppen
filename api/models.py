@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.contrib.postgres.fields import JSONField
 from django.contrib.gis.db import models as geo_models
 
 
@@ -79,7 +77,7 @@ class TimeSlot(models.Model):
 
     class Meta:
         unique_together = ("start", "end", "company")
-    
+
 
 class Request(models.Model):
     company = models.ForeignKey("Company", on_delete=models.CASCADE)
@@ -93,3 +91,6 @@ class Request(models.Model):
             raise ValidationError("The chosen TimeSlot does not accept requests anymore: " + str(self.slot))
 
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.customer_email + " on:" + str(self.slot)

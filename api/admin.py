@@ -29,4 +29,3 @@ class CompanyAdmin(OSMGeoAdmin):
     search_fields = ("name", "email", "phone")
     list_display = ("name", "email", "phone")
     autocomplete_fields = ("category", "sub_categories")
-
