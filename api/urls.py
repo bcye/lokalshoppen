@@ -1,8 +1,6 @@
 from django.urls import include, path
 from rest_framework import routers
 from api import views
-from django.conf.urls import url
-from graphene_django.views import GraphQLView
 
 
 router = routers.DefaultRouter()

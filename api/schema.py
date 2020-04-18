@@ -3,17 +3,14 @@ import graphene
 from .models import Request, SubCategory, Category, Company, TimeSlot, BusinessHours
 
 import graphql_geojson
-from graphene import relay, ObjectType
+from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
-from graphql_geojson.filters import GeometryFilterSet, DistanceFilter
-from graphql_geojson.fields import DistanceField
-from django.contrib.gis import forms
-from graphene_django.forms.converter import convert_form_field
+from graphql_geojson.filters import GeometryFilterSet
 from django.db.models import Prefetch, Count, F
-from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_relay import from_global_id
 from django.utils import timezone
+
 
 # Filters
 class CompanyFilter(GeometryFilterSet):
@@ -25,6 +22,7 @@ class CompanyFilter(GeometryFilterSet):
             "active": ['exact'],
             "category": ["exact"],
         }
+
 
 # Node types
 class RequestNode(DjangoObjectType):
@@ -47,6 +45,7 @@ class SubCategoryNode(DjangoObjectType):
         interfaces = (relay.Node, )
 
         filter_fields = ["name", "slug"]
+
 
 class BusinessHoursNode(DjangoObjectType):
     class Meta:
@@ -80,15 +79,16 @@ class CompanyNode(graphql_geojson.GeoJSONType):
 
         interfaces = (relay.Node, )
 
+
 # Filtered company queryset used by GraphQL endpoints
 def get_company_queryset(start):
     return Company.objects.all().prefetch_related(
-            Prefetch(
-                "timeslot_set",
-                queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot")-Count("request")).filter(start__gte=timezone.now(start))
-            )).filter(
-                active=True,
-            )
+        Prefetch(
+            "timeslot_set",
+            queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot") - Count("request")).filter(start__gte=timezone.now(start))
+        )
+    ).filter(active=True)
+
 
 class Query(object):
     all_categories = DjangoFilterConnectionField(CategoryNode)
@@ -114,13 +114,14 @@ class CreateRequest(relay.ClientIDMutation):
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
         request = Request()
-        request.text = input["text"]    
+        request.text = input["text"]
         request.customer_email = input["customer_email"]
         request.company_id = from_global_id(input["company_id"])[1]
         request.slot_id = from_global_id(input["slot_id"])[1]
 
         request.save()
         return CreateRequest(data=request)
+
 
 class BusinessHoursInput(graphene.InputObjectType):
     start = graphene.Time()
@@ -141,7 +142,6 @@ class CreateCompany(relay.ClientIDMutation):
         max_per_slot = graphene.Int()
         business_hours_set = graphene.List(BusinessHoursInput)
 
-
     data = graphene.Field(CompanyNode)
 
     @classmethod
@@ -154,10 +154,10 @@ class CreateCompany(relay.ClientIDMutation):
 
         for bhdata in business_hours:
             company.businesshours_set.create(**bhdata)
-        
+
         return CreateRequest(data=company)
+
 
 class Mutations(graphene.ObjectType):
     createRequest = CreateRequest.Field()
     createCompany = CreateCompany.Field()
-

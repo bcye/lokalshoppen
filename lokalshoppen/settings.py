@@ -28,13 +28,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 def debug_val():
     return (os.getenv('DEBUG') == "True")
 
+
 DEBUG = debug_val()
 
-if DEBUG == False:
+
+if not DEBUG:
     sentry_sdk.init(
         dsn="https://732d33dd13754c00be9ff3f667155b19@sentry.io/5187844",
         integrations=[DjangoIntegration()],
@@ -86,8 +89,7 @@ ROOT_URLCONF = 'lokalshoppen.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
