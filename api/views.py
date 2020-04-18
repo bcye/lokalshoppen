@@ -1,6 +1,4 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest_framework import permissions
 from .serializers import AnfrageSerializer, UnternehmenSerializer, OberKategorienSerializer, UnterKategorienSerializer
 from .models import Request, Company, Category, SubCategory
 from django.http import HttpResponse, HttpResponseForbidden
@@ -37,7 +35,7 @@ class UnterKategorienViewSet(viewsets.ModelViewSet):
 
 
 def confirm_purchase(request, id):
-    if not request.user.is_authenticated or not  request.user.is_staff:
+    if not request.user.is_authenticated or not request.user.is_staff:
         return HttpResponseForbidden("Oops.")
 
     anfrage = Request.objects.get(pk=id)
