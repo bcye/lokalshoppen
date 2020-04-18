@@ -1,5 +1,6 @@
 from api.models import Category
 
+
 KATEGORIEN_CHOICES = [
     ("LEB", "Lebensmittel"),
     ("BAE", "Bäckerei"),
@@ -23,6 +24,7 @@ KATEGORIEN_CHOICES = [
     ("SPI", "Spielwaren"),
     ("SCH", "Schuhe"),
 ]
+
 
 def import_old_cats():
     for slug, name in KATEGORIEN_CHOICES:

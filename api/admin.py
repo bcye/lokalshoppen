@@ -2,12 +2,15 @@ from django.contrib import admin
 from .models import Request, TimeSlot, Company, Category, SubCategory, BusinessHours
 from django.contrib.gis.admin import OSMGeoAdmin
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("slug", "name")
     search_fields = ("name", "slug")
 
+
 class RequestAdmin(admin.ModelAdmin):
     list_display = ("company", "customer_email", "slot")
+
 
 # Register your models here.
 admin.site.register(Request, RequestAdmin)
