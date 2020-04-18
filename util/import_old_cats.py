@@ -29,5 +29,3 @@ KATEGORIEN_CHOICES = [
 def import_old_cats():
     for slug, name in KATEGORIEN_CHOICES:
         Category.objects.get_or_create(slug=slug, name=name)
-
-
