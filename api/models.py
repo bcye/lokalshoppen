@@ -38,7 +38,7 @@ class Company(models.Model):
     active = models.BooleanField(default=False, help_text="The company is only listed in the map when this flag is active")
 
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
-    sub_categories = models.ManyToManyField(SubCategory)
+    sub_categories = models.ManyToManyField(SubCategory, blank=True)
 
     def __str__(self):
         return self.name

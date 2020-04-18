@@ -7,5 +7,3 @@ ssh-keyscan -H api.bleiblokal.com >> ~/.ssh/known_hosts
 
 git remote add deploy dokku@api.bleiblokal.com:lokalshoppen
 git push deploy dev
-
-EOF
