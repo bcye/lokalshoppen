@@ -85,7 +85,7 @@ def get_company_queryset(start):
     return Company.objects.all().prefetch_related(
         Prefetch(
             "timeslot_set",
-            queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot") - Count("request")).filter(start__gte=timezone.now(start))
+            queryset=TimeSlot.objects.annotate(available=F("company__max_per_slot") - Count("request")).filter(start__gte=timezone.now())
         )
     ).filter(active=True)
 
