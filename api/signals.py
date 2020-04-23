@@ -83,7 +83,7 @@ def send_confirmation(sender, instance, created, **kwargs):
     )
 
 
-@receiver(post_save, sender=Company)
-def maketimeslots(sender, instance, created, **kwargs):
-    if created:
-        call_command("maketimeslots")
+# @receiver(post_save, sender=Company)
+# def maketimeslots(sender, instance, created, **kwargs):
+#     if created:
+#         call_command("maketimeslots")
