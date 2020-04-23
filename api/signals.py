@@ -1,10 +1,10 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Request, Company
+from .models import Request  # , Company
 from django.core.mail import send_mail
 from django.urls import reverse
 from lokalshoppen.settings import DOMAIN_NAME
-from django.core.management import call_command
+# from django.core.management import call_command
 
 
 @receiver(post_save, sender=Request)
